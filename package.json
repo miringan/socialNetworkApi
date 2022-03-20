@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/miringan/socialNetworkApi/issues"
   },
-  "homepage": "https://github.com/miringan/socialNetworkApi#readme"
+  "homepage": "https://github.com/miringan/socialNetworkApi#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.7"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
