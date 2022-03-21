@@ -10,18 +10,33 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now(),
+            // get: timestamp(),
         },
         username: {
             type: String,
             required: true,
         },
         reactions: [reactionSchema],
+    },
+    {
+        toJSON: {
+            virtuals: true
+        },
+        id: false,
     }
 );
 
 // virtual goes here.
 
-// getter for timestamp
+thoughtSchema.virtual('reactionCount').get(function () {
+    return this.reactions.length;
+})
+
+// // getter for timestamp
+// function timestamp(date) {
+
+// }
+
 
 const Thought = model('thought', thoughtSchema);
 
