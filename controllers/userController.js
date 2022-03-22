@@ -70,4 +70,6 @@ module.exports = {
             res.status(500).json(err);
           });
     },
+    // POST to add a new friend to user's friend list
+    // DELETE to remove a friend from a user's friend list
 }
