@@ -64,6 +64,31 @@ module.exports = {
           });
     },
     // POST to create a reaction in a single thought's reactions array field
-
+    addReaction(req, res) {
+      Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { tags: req.body } },
+        { runValidators: true, new: true }
+      )
+        .then((thought) =>
+          !thought
+            ? res.status(404).json({ message: 'No thought with this id!' })
+            : res.json(thought)
+        )
+        .catch((err) => res.status(500).json(err));
+    },
     // DELETE to pull and remove a reaction by the reaction's reactionId value
+    removeReaction(req, res) {
+      Thought.findOneAndUpdate(
+        { _id: req.params.reactionId },
+        { $pull: { tags: { tagId: req.params.tagId } } },
+        { runValidators: true, new: true }
+      )
+        .then((application) =>
+          !application
+            ? res.status(404).json({ message: 'No application with this id!' })
+            : res.json(application)
+        )
+        .catch((err) => res.status(500).json(err));
+    },
 }
