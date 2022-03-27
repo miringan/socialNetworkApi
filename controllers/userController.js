@@ -24,6 +24,14 @@ module.exports = {
         });
     },
     // POST a new user
+    /*
+    JSON body format:
+    {
+      "username": ""
+      "email": ""
+    }
+
+    */
     createUser(req, res) {
         User.create(req.body)
           .then((user) => res.json(user))
@@ -74,7 +82,7 @@ module.exports = {
     addFriend(req, res) {
       User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { responses: req.body } },
+        { $addToSet: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       )
         .then((user) =>
