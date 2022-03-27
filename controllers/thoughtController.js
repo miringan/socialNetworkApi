@@ -25,12 +25,20 @@ module.exports = {
     },
     // POST a new thought
     createThought(req, res) {
-        Thought.create(req.body)
-          .then((thought) => res.json(thought))
-          .catch((err) => {
-            console.log(err);
-            return res.status(500).json(err);
-          });
+      Thought.create(req.body)
+        .then((thought) => {
+          Thought.findOneAndUpdate(
+            { _id: req.body.userId },
+            { $addToSet: { thoughts: thought._id } },
+            { runValidators: true, new: true }
+          )
+          .then((thought) =>
+            !thought
+              ? res.status(404).json({ message: 'No thought with this id!' })
+              : res.json(thought)
+          )
+          .catch((err) => res.status(500).json(err));
+      })
     },
     // PUT to update a thought by its _id
     updateThought(req, res) {
@@ -67,7 +75,7 @@ module.exports = {
     addReaction(req, res) {
       Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $addToSet: { tags: req.body } },
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
       )
         .then((thought) =>
